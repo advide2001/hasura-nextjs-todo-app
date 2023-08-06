@@ -1,0 +1,25 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  user_id    Int      @id @default(autoincrement())
+  username   String
+  created_at DateTime @default(now())
+  Todos      Todos?
+}
+
+model Todos {
+  id           Int     @id @default(autoincrement())
+  title        String
+  is_completed Boolean @default(false)
+  is_public    Boolean @default(false)
+  user         User    @relation(fields: [user_id], references: [user_id])
+  user_id      Int     @unique
+}
